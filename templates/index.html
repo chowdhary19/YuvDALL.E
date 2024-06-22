@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Illusionary Artistry Forge</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <style>
+    body {
+      background-color: #e6f3ff; /* Light blue background color */
+      color: #495057;
+      font-family: Arial, sans-serif;
+    }
+    .navbar-custom {
+      background-color: #6cb2eb;
+    }
+    .image-prompt {
+      font-size: 1.2rem;
+    }
+    .loading-spinner-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px; /* Adjust as needed */
+      margin-top: 20px;
+    }
+    .loading-spinner {
+      color: #17a2b8;
+    }
+    .image-container {
+      margin-top: 20px;
+    }
+    .generated-image {
+      height: 300px; /* Adjust height */
+      max-width: 100%; /* Adjust as needed */
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease-in-out;
+    }
+    .generated-image:hover {
+      transform: scale(1.05);
+    }
+    .image-frame {
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      background: linear-gradient(135deg, #f0f4ff, #d9e9ff);
+      transition: box-shadow 0.3s ease-in-out;
+    }
+    .image-frame:hover {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+    .image-caption {
+      margin-top: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .footer {
+      background-color: #6cb2eb;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">DALL·E Based Image Generator</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About Us</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Explore
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Generate Surreal Artworks</a></li>
+              <li><a class="dropdown-item" href="#">Create Fantasy Landscapes</a></li> 
+              <li><a class="dropdown-item" href="#">Design Abstract Concepts</a></li> 
+            </ul>
+          </li> 
+        </ul>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search Images" aria-label="Search">
+          <button class="btn btn-outline-primary" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="mb-4 text-center">Illusionary Artistry Forge</h1>
+
+    <form>
+      <div class="mb-3">
+        <label for="imgprompt" class="form-label">Describe your ideal image</label>
+        <input id="imgprompt" type="text" class="form-control image-prompt" aria-describedby="promptHelp" placeholder="E.g., A mystical forest with glowing trees">
+        <div id="promptHelp" class="form-text">Let your imagination guide the creation!</div>
+      </div>
+      <button id="submitbtn" type="submit" class="btn btn-primary">Generate Image</button>
+    </form>
+
+    <div class="loading-spinner-container d-none" id="loadingGif">
+      <div class="spinner-border text-info loading-spinner" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Image frames are initially visible -->
+    <div class="row row-cols-1 row-cols-md-2 g-4 mt-4 image-container" id="imageContainer">
+      <div class="col">
+        <div class="image-frame">
+          <img src="" class="img-fluid generated-image" alt="Generated Image" id="generatedImage1">
+          <p class="image-caption" id="caption1">Image 1 Caption</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="image-frame">
+          <img src="" class="img-fluid generated-image" alt="Generated Image" id="generatedImage2">
+          <p class="image-caption" id="caption2">Image 2 Caption</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="image-frame">
+          <img src="" class="img-fluid generated-image" alt="Generated Image" id="generatedImage3">
+          <p class="image-caption" id="caption3">Image 3 Caption</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="image-frame">
+          <img src="" class="img-fluid generated-image" alt="Generated Image" id="generatedImage4">
+          <p class="image-caption" id="caption4">Image 4 Caption</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Developed by Yuvraj Singh Chowdhary &copy; 2024. All rights reserved.</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  <script>
+    const submitBtn = document.getElementById("submitbtn");
+    const imgPrompt = document.getElementById("imgprompt");
+    const loadingGif = document.getElementById("loadingGif");
+    const imageContainer = document.getElementById("imageContainer");
+    const imageFrames = document.querySelectorAll(".image-frame");
+    const captions = document.querySelectorAll(".image-caption");
+
+    submitBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const promptText = imgPrompt.value.trim();
+
+      if (promptText === "") {
+        alert("Please describe your ideal image to generate.");
+        return;
+      }
+
+      // Show loading spinner and hide image frames
+      loadingGif.classList.remove("d-none");
+      imageFrames.forEach(frame => frame.style.display = 'none');
+
+      fetch("/generateimages/" + promptText)
+        .then(response => response.json())
+        .then(data => {
+          loadingGif.classList.add("d-none");
+          imageFrames.forEach(frame => frame.style.display = 'block');
+          const images = data.data;
+
+          images.forEach((image, index) => {
+            if (index < 4) { // Only handle first 4 images
+              const img = imageFrames[index].querySelector(".generated-image");
+              img.src = image.url;
+              captions[index].textContent = `Image ${index + 1} Caption: ${promptText}`;
+            }
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching image:', error);
+          loadingGif.classList.add("d-none");
+          alert('Failed to generate image. Please try again later.');
+        });
+    });
+  </script>
+</body>
+</html>
